@@ -7,19 +7,19 @@ int RunASMProbe(char *targ, int verb, enum OSTYPE OS, char *asmnam)
    int i = 0;
    if (targ)
    {
-      frm = "make IRun_%s atlrun=atlas_runX args=\"-v %d\" MYFLAGS=\"-DATL_OS_%s\" targ=%s 2> /dev/null | fgrep SUCCESS";
+      frm = "make IRun_%s atlrun=atlas_runX args=\"-v %d\" MYFLAGS=\"-DATL_OS_%s\" targ=%s 2> %s | fgrep SUCCESS";
       i = strlen(targ);
    }
    else
-      frm = "make IRun_%s args=\"-v %d\" MYFLAGS=\"-DATL_OS_%s\" 2> /dev/null | fgrep SUCCESS";
+      frm = "make IRun_%s args=\"-v %d\" MYFLAGS=\"-DATL_OS_%s\" 2> %s | fgrep SUCCESS";
 
-   i += strlen(frm) + strlen(asmnam) + 11 + strlen(osnam[OS]) + 1;
+   i += strlen(frm) + strlen(asmnam) + 11 + strlen(osnam[OS]) + 9;
    cmnd = malloc(i*sizeof(char));
    assert(cmnd);
    if (targ)
-      sprintf(cmnd, frm, asmnam, verb, osnam[OS], targ);
+      sprintf(cmnd, frm, asmnam, verb, osnam[OS], targ, devnull);
    else
-      sprintf(cmnd, frm, asmnam, verb, osnam[OS]);
+      sprintf(cmnd, frm, asmnam, verb, osnam[OS], devnull);
    if (verb > 1)
       fprintf(stderr, "system(%s)\n", cmnd);
    res = atlsys_1L(NULL, cmnd, verb, 0);

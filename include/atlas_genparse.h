@@ -291,7 +291,11 @@ static char *GetGoodGcc()
    if (!INIT)
    {
       FILE *fpin;
+#ifdef __MINGW32__
+      assert(system("make res/goodgcc.txt > nul 2>&1") == 0);
+#else
       assert(system("make res/goodgcc.txt > /dev/null 2>&1") == 0);
+#endif
       fpin = fopen("res/goodgcc.txt", "r");
       assert(fpin);
       assert(fscanf(fpin, "'%[^\']", gcc) == 1);

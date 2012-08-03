@@ -138,7 +138,7 @@ void GetString(FILE *fpin, char *Default, char *spc, char *expstr,
       else fprintf(stdout, "%sEnter %s:", spc, expstr);
    }
    sp = fgets(str, 512, fpin);
-   if ( (sp == NULL) || (str[0] == '\0') || (str[0] == '\n') )
+   if ( (sp == NULL) || (str[0] == '\0') || || (str[0] == '\r') || (str[0] == '\n') )
    {
       if (Default) strcpy(str0, Default);
       else str0[0] = '\0';
@@ -170,7 +170,7 @@ int IsYes(char def, char *spc, char *expstr)
    char ch, ln[256];
    fprintf(stdout, "%s%s [%c]: ", spc, expstr, def);
    if (fgets(ln, 256, stdin) == NULL) ch=def;
-   else if (ln[0] == '\0' || ln[0] == '\n') ch=def;
+   else if (ln[0] == '\0' || ln[0] == '\r' || ln[0] == '\n') ch=def;
    else ch = ln[0];
    return( ((ch == 'y') || (ch == 'Y')) );
 }
@@ -180,7 +180,7 @@ char GetChar(char def, char *spc, char *expstr)
    char ch, ln[256];
    fprintf(stdout, "%s%s [%c]: ", spc, expstr, def);
    if (fgets(ln, 256, stdin) == NULL) ch=def;
-   else if (ln[0] == '\0' || ln[0] == '\n') ch=def;
+   else if (ln[0] == '\0' || ln[0] == '\r' || ln[0] == '\n') ch=def;
    else ch = ln[0];
    return(ch);
 }
@@ -598,8 +598,11 @@ void GoToTown(int ARCHDEF, int L1DEF, int TuneLA)
    PrintBanner("INSTALL_LOG/SUMMARY.LOG", 1, 0, 0, 0);
    fpsum = fopen("INSTALL_LOG/SUMMARY.LOG", "a");
    ATL_Cassert(fpsum, "OPENING INSTALL_LOG/SUMMARY.LOG", NULL);
-
+#ifdef __MINGW32__
+   ATL_Cassert(tmpnam(tnam+sprintf(tnam,"%s","./tmp")), "GETTING TEMPFILE", NULL);
+#else
    ATL_Cassert(tmpnam(tnam), "GETTING TEMPFILE", NULL);
+#endif
 
    if (L1DEF)
    {

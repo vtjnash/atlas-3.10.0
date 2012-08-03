@@ -1149,7 +1149,7 @@ ATL_mmnode_t *FindBestGenGemm
       mmp = ReadMMFileWithPath(upr, "res", "gMMRES.sum");
       if (!mmp)
       {
-         sprintf(ln, "make res/%cgMMRES.sum > /dev/null 2>&1", upr);
+         sprintf(ln, "make res/%cgMMRES.sum > %s 2>&1", upr, devnull);
          assert(system(ln) == 0);
          mmp = ReadMMFileWithPath(upr, "res", "gMMRES.sum");
          assert(mmp);

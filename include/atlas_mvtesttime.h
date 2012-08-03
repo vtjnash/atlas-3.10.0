@@ -112,7 +112,11 @@ static int MVKernelFailsTest
    {
 
       FirstTime = 0;
+#ifdef __MINGW32__
+      assert(tmpnam_s(outnam));
+#else
       assert(tmpnam(outnam));
+#endif
    }
 /*
  * If the file is generated, call generator to create it
@@ -228,7 +232,11 @@ static double TimeMVKernel
    {
 
       FirstTime = 0;
+#ifdef __MINGW32__
+      assert(tmpnam_s(outnam));
+#else
       assert(tmpnam(outnam));
+#endif
    }
 /*
  * If the file is generated, call generator to create it

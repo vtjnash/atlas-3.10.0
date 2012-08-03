@@ -133,6 +133,34 @@ int ProbeMhz()
          free(res);
       }
    }
+   if (!mhz)
+   {
+        // Code "borrowed" from libuv
+        WCHAR key_name[128];
+        HKEY processor_key;
+        DWORD cpu_speed;
+        DWORD cpu_speed_size = sizeof(cpu_speed);
+
+        _snwprintf(key_name,
+                   sizeof(key_name) / sizeof(key_name[0]),
+                   L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\%d",
+                   1); // (only probe the first processor)
+
+        if (RegOpenKeyExW(HKEY_LOCAL_MACHINE,
+                          key_name,
+                          0,
+                          KEY_QUERY_VALUE,
+                          &processor_key) == ERROR_SUCCESS) {
+			if (RegQueryValueExW(processor_key,
+								 L"~MHz",
+								 NULL, NULL,
+								 (BYTE*) &cpu_speed,
+								 &cpu_speed_size) == ERROR_SUCCESS) {
+				mhz = cpu_speed;
+			}
+			RegCloseKey(processor_key);
+       }
+   }
    return(mhz);
 }
 

@@ -1,5 +1,11 @@
 #include "atlconf.h"
 
+#ifdef __MINGW32__
+#define execxisgcc "-and -name '*.exe' -exec xisgcc '{}' ;"
+#else
+#define execxisgcc "-exec ./xisgcc '{}' \\;"
+#endif
+
 COMPNODE *GetCompNode(void)
 {
    COMPNODE *p;
@@ -1245,11 +1251,11 @@ char *FindGoodGcc(enum OSTYPE OS, enum MACHTYPE arch, int verb, char *targ)
    char *OSpaths=NULL, *sp, **gccs=NULL;
    char *ln;
    FILE *fp;
-   int i, lnlen=1024;
+   int i, lnlen=2048;
    int GMAJOR, GMINOR, GPATCH;
 
    GetBestGccVers(OS, arch, &GMAJOR, &GMINOR, &GPATCH);
-   ln = malloc(lnlen*sizeof(char));
+   ln = malloc(lnlen);
    assert(ln);
 /*
  * See if we have some OS-specific places to search for good gcc
@@ -1263,10 +1269,10 @@ char *FindGoodGcc(enum OSTYPE OS, enum MACHTYPE arch, int verb, char *targ)
  */
    if (OSpaths)
    {
-      i = 64 + strlen(OSpaths);
+      i = 96 + strlen(OSpaths);
       ln = CheckStrLen(ln, &lnlen, i);
-      sprintf(ln, "find %s -maxdepth 1 -name '*gcc*' -exec ./xisgcc '{}' \\;",
-              OSpaths);
+      sprintf(ln, "find %s -maxdepth 1 -name '*gcc*' %s", 
+              OSpaths, execxisgcc);
       gccs = GetLinesFromFile(atlsys(NULL, ln, verb, 1), gccs);
       i = SelectBestGcc(verb, targ, GMAJOR, GMINOR, gccs);
       if (i > 1)
@@ -1289,10 +1295,10 @@ char *FindGoodGcc(enum OSTYPE OS, enum MACHTYPE arch, int verb, char *targ)
    sp = GetPathEnvVar();
    if (sp)
    {
-      i = 64 + strlen(sp);
+      i = 96 + strlen(sp);
       ln = CheckStrLen(ln, &lnlen, i);
-      sprintf(ln, "find %s -maxdepth 1 -name '*gcc*' -exec ./xisgcc '{}' \\;",
-              sp);
+      sprintf(ln, "find %s -maxdepth 1 -name '*gcc*' %s",
+              sp, execxisgcc);
       free(sp);
       fp = atlsys(NULL, ln, verb, 1);
       if (fp)
@@ -1316,8 +1322,8 @@ char *FindGoodGcc(enum OSTYPE OS, enum MACHTYPE arch, int verb, char *targ)
 /*
  * Try searching in $HOME/local, including all subdirs
  */
-   ln = CheckStrLen(ln, &lnlen, 64);
-   sprintf(ln, "find $HOME/local -name '*gcc*' -exec ./xisgcc '{}' \\;");
+   ln = CheckStrLen(ln, &lnlen, 96);
+   sprintf(ln, "find $HOME/local -name '*gcc*' %s", execxisgcc);
    fp = atlsys(NULL, ln, verb, 1);
    if (fp)
    {
@@ -1343,10 +1349,10 @@ char *FindGoodGcc(enum OSTYPE OS, enum MACHTYPE arch, int verb, char *targ)
       char *stdpaths =
          "/usr/local /bin /sbin /usr/bin /usr/sbin /opt/bin /opt/sbin";
 
-      i = 64 + strlen(stdpaths);
+      i = 96 + strlen(stdpaths);
       ln = CheckStrLen(ln, &lnlen, i);
-      i = sprintf(ln, "find %s -name '*gcc*' -exec ./xisgcc '{}' \\;",
-                  stdpaths);
+      i = sprintf(ln, "find %s -name '*gcc*' %s",
+                  stdpaths, execxisgcc);
       gccs = GetLinesFromFile(atlsys(NULL, ln, verb, 1), gccs);
       i = SelectBestGcc(verb, targ, GMAJOR, GMINOR, gccs);
       if (i > 1)
@@ -1372,10 +1378,10 @@ char *FindGoodGfortran(enum OSTYPE OS, enum MACHTYPE arch, int verb,
    char *OSpaths=NULL, *sp, **gccs=NULL;
    char *ln;
    FILE *fp;
-   int i, lnlen=1024;
+   int i, lnlen=2048;
    int ccomp, cmaj, cmin, cpat;
 
-   ln = malloc(lnlen*sizeof(char));
+   ln = malloc(lnlen);
    assert(ln);
 /*
  * Get gcc's version; we'll try to find a matching gfortran
@@ -1387,10 +1393,10 @@ char *FindGoodGfortran(enum OSTYPE OS, enum MACHTYPE arch, int verb,
    sp = GetPathWithoutName(gcc);  /* get path to gcc */
    if (sp)
    {
-      i = 64 + strlen(sp);
+      i = 96 + strlen(sp);
       ln = CheckStrLen(ln, &lnlen, i);
       sprintf(ln,
-         "find %s -maxdepth 1 -name '*gfortran*' -exec ./xisgcc '{}' \\;", sp);
+         "find %s -maxdepth 1 -name '*gfortran*' %s", sp, execxisgcc);
       gccs = GetLinesFromFile(atlsys(NULL, ln, verb, 1), gccs);
       i = SelectBestGcc(verb, targ, cmaj, cmin, gccs);
       if (i > 1)
@@ -1419,11 +1425,11 @@ char *FindGoodGfortran(enum OSTYPE OS, enum MACHTYPE arch, int verb,
  */
    if (OSpaths)
    {
-      i = 64 + strlen(OSpaths);
+      i = 96 + strlen(OSpaths);
       ln = CheckStrLen(ln, &lnlen, i);
       sprintf(ln,
-         "find %s -maxdepth 1 -name '*gfortran*' -exec ./xisgcc '{}' \\;",
-         OSpaths);
+         "find %s -maxdepth 1 -name '*gfortran*' %s",
+         OSpaths, execxisgcc);
       gccs = GetLinesFromFile(atlsys(NULL, ln, verb, 1), gccs);
       i = SelectBestGcc(verb, targ, cmaj, cmin, gccs);
       if (i > 1)
@@ -1446,10 +1452,10 @@ char *FindGoodGfortran(enum OSTYPE OS, enum MACHTYPE arch, int verb,
    sp = GetPathEnvVar();
    if (sp)
    {
-      i = 64 + strlen(sp);
+      i = 96 + strlen(sp);
       ln = CheckStrLen(ln, &lnlen, i);
       sprintf(ln,
-         "find %s -maxdepth 1 -name '*gfortran*' -exec ./xisgcc '{}' \\;", sp);
+         "find %s -maxdepth 1 -name '*gfortran*' %s", sp, execxisgcc);
       free(sp);
       gccs = GetLinesFromFile(atlsys(NULL, ln, verb, 1), gccs);
       i = SelectBestGcc(verb, targ, cmaj, cmin, gccs);
@@ -1469,8 +1475,8 @@ char *FindGoodGfortran(enum OSTYPE OS, enum MACHTYPE arch, int verb,
 /*
  * Try searching in $HOME/local, including all subdir
  */
-   ln = CheckStrLen(ln, &lnlen, 64);
-   sprintf(ln, "find $HOME/local -name '*gfortran*' -exec ./xisgcc '{}' \\;");
+   ln = CheckStrLen(ln, &lnlen, 96);
+   sprintf(ln, "find $HOME/local -name '*gfortran*' %s", execxisgcc);
    fp = atlsys(NULL, ln, verb, 1);
    if (fp)
    {
@@ -1496,12 +1502,12 @@ char *FindGoodGfortran(enum OSTYPE OS, enum MACHTYPE arch, int verb,
       char *stdpaths =
          "/usr/local /bin /sbin /usr/bin /usr/sbin /opt/bin /opt/sbin";
 
-      i = 64 + strlen(stdpaths);
+      i = 96 + strlen(stdpaths);
       ln = CheckStrLen(ln, &lnlen, i);
-      i = sprintf(ln, "find %s -name '*gcc*' -exec ./xisgcc '{}' \\;",
-                  stdpaths);
-      i = sprintf(ln, "find %s -name '*gfortran*' -exec ./xisgcc '{}' \\;",
-                   stdpaths);
+      i = sprintf(ln, "find %s -name '*gcc*' %s",
+                  stdpaths, execxisgcc);
+      i = sprintf(ln, "find %s -name '*gfortran*' %s",
+                   stdpaths, execxisgcc);
       gccs = GetLinesFromFile(atlsys(NULL, ln, verb, 1), gccs);
       i = SelectBestGcc(verb, targ, cmaj, cmin, gccs);
       if (i > 1)
@@ -1546,7 +1552,7 @@ char *FindNamedComp(enum OSTYPE OS, enum MACHTYPE arch, int verb,
    sp = GetPathEnvVar();
    if (sp)
    {
-      i = 64 + lcmp + strlen(sp);
+      i = 96 + lcmp + strlen(sp);
       ln = CheckStrLen(ln, &lnlen, i);
       sprintf(ln, "find %s -maxdepth 1 -name '%s'", sp, comp);
       free(sp);
@@ -1984,6 +1990,7 @@ int main(int nargs, char **args)
       else
          goodgcc = FindGoodGcc(OS, mach,  verb, targ);
    #endif
+   assert(goodgcc);
    GetComps(OS, mach, verb, targ, ptrbits, usrcomps, nof77, nocygwin, vecexts,
             goodgcc, bindir);
 /*

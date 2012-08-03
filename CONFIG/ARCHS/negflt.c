@@ -239,7 +239,11 @@ void NegFile(char *fnam, int N, int *cols)
    FILE *fpin, *fpout;
    WORDS *wp0, *wp;
 
+#ifdef __MINGW32__
+   tnam = tmpnam_s(NULL);
+#else
    tnam = tmpnam(NULL);
+#end
    fpin = fopen(fnam, "r");
    assert(fpin);
    fpout = fopen(tnam, "w");

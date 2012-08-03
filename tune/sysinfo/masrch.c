@@ -6,6 +6,12 @@
    #define NTIM 3
 #endif
 
+#ifdef __MINGW32__
+#define devnull "nul"
+#else
+#define devnull "/dev/null"
+#endif
+
 void magen
 (
    char pre,    /* precision: s,d,q */
@@ -104,7 +110,7 @@ double matime
          i += sprintf(ln+i, " -t 1");
       ln[i++] = '"';
       ln[i] = '\0';
-      sprintf(ln+i, "2>&1 > /dev/null");
+      sprintf(ln+i, "2>&1 > %s", devnull);
       assert(!system(ln));
       fp = fopen(fnam, "r");
       assert(fp);

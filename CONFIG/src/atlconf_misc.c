@@ -698,20 +698,33 @@ char *GetPathEnvVar(void)
       return(NULL);
 
    n = strlen(path);
-   p = pp = malloc((2*n+1)*sizeof(char));
+   p = pp = malloc(3*n+1);
    assert(pp);
+   *p++ = '\'';
    for (i=0; i < n; i++)
    {
-      if (path[i] == ':')
-         *p++ = ' ';
-      else if (path[i] == ' ')
-      {
-         *p = '\\';
-	 p[1] = ' ';
-	 p += 2;
-      }
-      else
+#ifdef __MINGW32__
+      if (path[i] == ';') {
+#else
+      if (path[i] == ':') {
+#endif
+         if (p[-1] != '\'') {
+            *p++ = '\'';
+            *p++ = ' ';
+            *p++ = '\'';
+	     }
+	  }
+      //else if (path[i] == '\'' || path[i] == '(' || path[i] == ')' || path[i]) {
+      //      *p++ = '\';
+      //      *p++ = ' ';
+      else {
          *p++ = path[i];
+	  }
+   }
+   if (p[-1] != '\'') {
+      *p++ = '\'';
+   } else {
+      p--;
    }
    *p = '\0';
    return(pp);

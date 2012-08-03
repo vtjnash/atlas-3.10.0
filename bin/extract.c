@@ -3361,6 +3361,7 @@ void PushProc0(EXTENV *EE, EXTPROC **basep, EXTPROC **myfuncs, char *ln)
    FILE *fp;
    char *cp;
    int i;
+   char tnam[L_tmpnam];
 
    pp = malloc(sizeof(EXTPROC));
    wpbase = wp = GetWords(ln);
@@ -3378,11 +3379,15 @@ void PushProc0(EXTENV *EE, EXTPROC **basep, EXTPROC **myfuncs, char *ln)
    pp->argnams = KillWord(wp, wp);
    pp->nargs = CountWords(pp->argnams);
 
+#ifdef __MINGW32__
+   cp = tmpnam(tnam+sprintf(tnam,"%s","./tmp"))
+#else
    cp = tmpnam(NULL);
+#endif
    if (cp == NULL) ExtErr(EE, "Out of tmpnams!!!");
-   i = Wstrlen(cp) + 1;
+   i = Wstrlen(tnam) + 1;
    pp->FileNam = malloc(i*sizeof(char));
-   Wstrcpy(pp->FileNam, cp);
+   Wstrcpy(pp->FileNam, tnam);
 /*
  * Dump procedure to tmpfile
  */

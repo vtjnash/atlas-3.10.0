@@ -820,11 +820,16 @@ void SpewItForth(int verb, enum OSTYPE OS, enum MACHTYPE arch, int mhz,
  * Calls xspew with correct arguments to build required Make.inc
  */
 {
-   char *frm = "./xspew -v %d -O %d -A %d -m %d -s %d -V %d -b %d -f %d -d s '%s' -d b '%s' -D c '%s' -D f '%s' %s -Si archdef %d -Si ieee %d -Si bozol1 %d -Si latune %d -Si nof77 %d -o Make.inc";
+#ifdef __MINGW32__
+   char *frm = "xspew -v %d -O %d -A %d -m %d -s %d -V %d -b %d -f %d -d s \"%s\" -d b \"%s\" -D c \"%s\" -D f \"%s\" %s -Si archdef %d -Si ieee %d -Si bozol1 %d -Si latune %d -Si nof77 %d -o Make.inc";
+#else
+   char *frm = "./xspew -v %d -O %d -A %d -m %d -s %d -V %d -b %d -f %d -d s \"%s\" -d b \"%s\" -D c \"%s\" -D f \"%s\" %s -Si archdef %d -Si ieee %d -Si bozol1 %d -Si latune %d -Si nof77 %d -o Make.inc";
+#endif
    char *ln, *compsflags, archflags[1024];
    int i;
 
    assert(!system("make xspew"));
+   compsflags = Comps2Flags(comps);  /* Xlate comp/flag array to xspew flags */
    compsflags = Comps2Flags(comps);  /* Xlate comp/flag array to xspew flags */
    i = strlen(frm) + 11*13 + strlen(srcdir) + strlen(bindir);
    if (cdefs)

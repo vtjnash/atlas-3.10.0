@@ -747,7 +747,7 @@ double ummcase0
       i += sprintf(ln+i, "pre=%c muladd=%d lat=%d M=%d N=%d K=%d mb=%d nb=%d kb=%d mu=%d nu=%d ku=%d lda=%d ldb=%d ldc=%d ",
                    pre, muladd, lat, M, N, K, mb, nb, kb, mu, nu, ku,
                    lda, ldb, ldc);
-      i += sprintf(ln+i, "> /dev/null 2>&1\n");
+      i += sprintf(ln+i, "> %s 2>&1\n", devnull);
       if (system(ln) != 0) return(-1.0);
    }
    mf = GetRes(outnam);
@@ -1011,7 +1011,7 @@ int ummtstcase0
    i += sprintf(ln+i, "pre=%c muladd=%d lat=%d M=%d N=%d K=%d mb=%d nb=%d kb=%d mu=%d nu=%d ku=%d lda=%d ldb=%d ldc=%d ",
                 pre, muladd, lat, M, N, K, mb, nb, kb, mu, nu, ku,
                 lda, ldb, ldc);
-   i += sprintf(ln+i, "> /dev/null 2>&1\n");
+   i += sprintf(ln+i, "> %s 2>&1\n", devnull);
    fprintf(stdout, "     TESTING PRE='%c' FILE='%s', NB=%d . . .",
            pre, fnam, nb);
    i = system(ln);

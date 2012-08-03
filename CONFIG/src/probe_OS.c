@@ -36,7 +36,7 @@ enum OSTYPE ProbeOS(int verb, char *targ)
       else if(strstr(res, "OSF1")) OS = OSOSF1;
       else if(strstr(res, "IRIX")) OS = OSIRIX;
       else if(strstr(res, "AIX")) OS = OSAIX;
-      else if(strstr(res, "WIN"))
+      else if(strstr(res, "WIN") || strstr(res, "MINGW"))
       {
          if (strstr(res, "95") || strstr(res, "98") || strstr(res, "_ME"))
             OS = OSWin9x;

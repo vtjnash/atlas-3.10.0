@@ -331,13 +331,13 @@ double mms_case(char pre, int MULADD, int NB, int mu, int nu, int ku,
    {
       if (pre == 'c' || pre == 'z')
          sprintf(ln,
-" make mmcase pre=%c loopO=%s ta=%c tb=%c mb=%d nb=%d kb=%d lda=%d ldb=%d ldc=%d mu=%d nu=%d ku=%d alpha=%d beta=%d muladd=%d lat=%d csA=1 csB=1 csC=2 cleanup=%d pfA=%d > /dev/null 2>&1\n",
+" make mmcase pre=%c loopO=%s ta=%c tb=%c mb=%d nb=%d kb=%d lda=%d ldb=%d ldc=%d mu=%d nu=%d ku=%d alpha=%d beta=%d muladd=%d lat=%d csA=1 csB=1 csC=2 cleanup=%d pfA=%d > %s 2>&1\n",
                    pre, "JIK", 'T', 'N', NB, NB, NB, NB, NB, 0, mu, nu, ku,
-                   1, 1, MULADD, lat, 1, pfA);
+                   1, 1, MULADD, lat, 1, pfA, devnull);
       else sprintf(ln,
-" make mmcase pre=%c loopO=%s ta=%c tb=%c mb=%d nb=%d kb=%d lda=%d ldb=%d ldc=%d mu=%d nu=%d ku=%d alpha=%d beta=%d muladd=%d lat=%d cleanup=%d pfA=%d > /dev/null 2>&1\n",
+" make mmcase pre=%c loopO=%s ta=%c tb=%c mb=%d nb=%d kb=%d lda=%d ldb=%d ldc=%d mu=%d nu=%d ku=%d alpha=%d beta=%d muladd=%d lat=%d cleanup=%d pfA=%d > %s 2>&1\n",
                    pre, "JIK", 'T', 'N', NB, NB, NB, NB, NB, 0, mu, nu, ku,
-                   1, 1, MULADD, lat, 1, pfA);
+                   1, 1, MULADD, lat, 1, pfA, devnull);
       if (system(ln) != 0)
       {
          fprintf(stderr, "ERROR IN COMMAND: %s", ln);
@@ -376,13 +376,13 @@ double mms_caseIC(char pre, int MULADD, int NB, int mu, int nu, int ku,
    {
       if (pre == 'c' || pre == 'z')
          sprintf(ln,
-" make mmcase pre=%c loopO=%s ta=%c tb=%c mb=%d nb=%d kb=%d lda=%d ldb=%d ldc=%d mu=%d nu=%d ku=%d alpha=%d beta=%d muladd=%d lat=%d csA=1 csB=1 csC=2 cleanup=%d casnam=%s moves=\"\" > /dev/null 2>&1\n",
+" make mmcase pre=%c loopO=%s ta=%c tb=%c mb=%d nb=%d kb=%d lda=%d ldb=%d ldc=%d mu=%d nu=%d ku=%d alpha=%d beta=%d muladd=%d lat=%d csA=1 csB=1 csC=2 cleanup=%d casnam=%s moves=\"\" > %s 2>&1\n",
                    pre, "JIK", 'T', 'N', NB, NB, NB, NB, NB, 0, mu, nu, ku,
-                   1, 1, MULADD, lat, 1, fnam);
+                   1, 1, MULADD, lat, 1, fnam, devnull);
       else sprintf(ln,
-" make mmcase pre=%c loopO=%s ta=%c tb=%c mb=%d nb=%d kb=%d lda=%d ldb=%d ldc=%d mu=%d nu=%d ku=%d alpha=%d beta=%d muladd=%d lat=%d cleanup=%d casnam=%s moves=\"\" > /dev/null 2>&1\n",
+" make mmcase pre=%c loopO=%s ta=%c tb=%c mb=%d nb=%d kb=%d lda=%d ldb=%d ldc=%d mu=%d nu=%d ku=%d alpha=%d beta=%d muladd=%d lat=%d cleanup=%d casnam=%s moves=\"\" > %s 2>&1\n",
                    pre, "JIK", 'T', 'N', NB, NB, NB, NB, NB, 0, mu, nu, ku,
-                   1, 1, MULADD, lat, 1, fnam);
+                   1, 1, MULADD, lat, 1, fnam, devnull);
       if (system(ln) != 0)
       {
          fprintf(stderr, "ERROR IN COMMAND: %s", ln);
@@ -441,15 +441,15 @@ double mmcase0(char *nam, char pre, char *loopO, char ta, char tb,
    {
       if (pre == 'c' || pre == 'z')
          sprintf(ln,
-" make %s pre=%c loopO=%s ta=%c tb=%c M=%d N=%d K=%d mb=%d nb=%d kb=%d lda=%d ldb=%d ldc=%d lda2=%d ldb2=%d ldc2=%d mu=%d nu=%d ku=%d alpha=%d beta=%d muladd=%d lat=%d cleanup=%d csA=%d csB=%d csC=%d ff=%d if=%d nf=%d pfA=%d %s > /dev/null 2>&1\n",
+" make %s pre=%c loopO=%s ta=%c tb=%c M=%d N=%d K=%d mb=%d nb=%d kb=%d lda=%d ldb=%d ldc=%d lda2=%d ldb2=%d ldc2=%d mu=%d nu=%d ku=%d alpha=%d beta=%d muladd=%d lat=%d cleanup=%d csA=%d csB=%d csC=%d ff=%d if=%d nf=%d pfA=%d %s > %s 2>&1\n",
                  mmcase,pre, loopO, ta, tb, M, N, K, mb, nb, kb, lda, ldb, ldc,
                  lda2, ldb2, ldc2, mu, nu, ku, 1, beta, muladd, lat, 1,
-                 csA, csB, csC, FFetch, ifetch, nfetch, pfA, casnam);
+                 csA, csB, csC, FFetch, ifetch, nfetch, pfA, casnam, devnull);
       else sprintf(ln,
-" make %s pre=%c loopO=%s ta=%c tb=%c M=%d N=%d K=%d mb=%d nb=%d kb=%d lda=%d ldb=%d ldc=%d lda2=%d ldb2=%d ldc2=%d mu=%d nu=%d ku=%d alpha=%d beta=%d muladd=%d lat=%d cleanup=%d ff=%d if=%d nf=%d pfA=%d %s > /dev/null 2>&1\n",
+" make %s pre=%c loopO=%s ta=%c tb=%c M=%d N=%d K=%d mb=%d nb=%d kb=%d lda=%d ldb=%d ldc=%d lda2=%d ldb2=%d ldc2=%d mu=%d nu=%d ku=%d alpha=%d beta=%d muladd=%d lat=%d cleanup=%d ff=%d if=%d nf=%d pfA=%d %s > %s 2>&1\n",
                    mmcase, pre, loopO, ta, tb, M, N, K, mb, nb, kb, lda, ldb,
                    ldc, lda2, ldb2, ldc2, mu, nu, ku, 1, beta, muladd, lat, 1,
-                   FFetch, ifetch, nfetch, pfA, casnam);
+                   FFetch, ifetch, nfetch, pfA, casnam, devnull);
       if (system(ln) != 0)
       {
 /*

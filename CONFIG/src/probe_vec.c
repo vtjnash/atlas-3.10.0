@@ -35,18 +35,18 @@ int RunISAProbe(char *isaxnam, int verb, char *targ, char *opt)
    int i=1;
    if (targ)
    {
-      frm = "make IRun_%s atlrun=atlas_runX targ=%s MYFLAGS='%s' 2> /dev/null | fgrep SUCCESS";
+      frm = "make IRun_%s atlrun=atlas_runX targ=%s MYFLAGS='%s' 2> %s | fgrep SUCCESS";
       i += strlen(targ);
    }
    else
-      frm = "make IRun_%s MYFLAGS='%s' 2> /dev/null | fgrep SUCCESS";
-   i += strlen(frm) + strlen(isaxnam) + strlen(opt);
+      frm = "make IRun_%s MYFLAGS='%s' 2> %s | fgrep SUCCESS";
+   i += strlen(frm) + strlen(isaxnam) + strlen(opt) + 8;
    cmnd = malloc(sizeof(char)*i);
    assert(cmnd);
    if (targ)
-      sprintf(cmnd, frm, isaxnam, targ, opt);
+      sprintf(cmnd, frm, isaxnam, targ, opt, devnull);
    else
-      sprintf(cmnd, frm, isaxnam, opt);
+      sprintf(cmnd, frm, isaxnam, opt, devnull);
    res = atlsys_1L(targ, cmnd, verb, 0);
    if(res)
    {

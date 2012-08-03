@@ -67,4 +67,10 @@ char **NewOneStringList(char **strs, int n);
 
 #define BADINT -777938
 
+#ifdef __MINGW32__
+#define devnull "nul"
+#else
+#define devnull "/dev/null"
+#endif
+
 #endif

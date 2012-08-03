@@ -83,7 +83,11 @@ static int R2KernelFailsTest
    {
 
       FirstTime = 0;
+#ifdef __MINGW32__
+      assert(tmpnam_s(outnam));
+#else
       assert(tmpnam(outnam));
+#endif
    }
 /*
  * If the file is generated, call generator to create it
@@ -194,7 +198,11 @@ static double TimeR2Kernel
    {
 
       FirstTime = 0;
+#ifdef __MINGW32__
+      assert(tmpnam_s(outnam));
+#else
       assert(tmpnam(outnam));
+#endif
    }
 /*
  * If the file is generated, call generator to create it

@@ -143,7 +143,7 @@ void FillInSSEGenString
  */
    if (FLAG_IS_SET(mmp->flag, MMF_PFCELTS))
       i += sprintf(ln+i, " -prefetchCelts 1");
-   i += sprintf(ln+i, "\" > /dev/null 2>&1\n");
+   i += sprintf(ln+i, "\" > %s 2>&1\n", devnull);
 //   fprintf(stderr, "\n\nGENSTRING = %s\n", ln);
    if (mmp->genstr)
       free(mmp->genstr);

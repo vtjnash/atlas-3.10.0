@@ -30,17 +30,17 @@ int RunAffProbe(int iaff, int verb, char *targ, int iproc)
    if (targ)
    {
       i += strlen(targ);
-      frm = "make IRun_%s atlrun=atlas_runX targ=%s LIBS='%s' args='%d' 2> /dev/null | fgrep SUCCESS";
+      frm = "make IRun_%s atlrun=atlas_runX targ=%s LIBS='%s' args='%d' 2> %s| fgrep SUCCESS";
    }
    else
-      frm = "make IRun_%s LIBS='%s' args='%d' 2> /dev/null | fgrep SUCCESS";
-   i += strlen(frm) + strlen(AFFS[iaff]) + strlen(lib) + 11;
+      frm = "make IRun_%s LIBS='%s' args='%d' 2> %s | fgrep SUCCESS";
+   i += strlen(frm) + strlen(AFFS[iaff]) + strlen(lib) + 19;
    cmnd = malloc(sizeof(char)*i);
    assert(cmnd);
    if (targ)
-      sprintf(cmnd, frm, AFFS[iaff], targ, lib, iproc);
+      sprintf(cmnd, frm, AFFS[iaff], targ, lib, iproc, devnull); 
    else
-      sprintf(cmnd, frm, AFFS[iaff], lib, iproc);
+      sprintf(cmnd, frm, AFFS[iaff], lib, iproc, devnull);
    res = atlsys_1L(NULL, cmnd, verb, 0);
    if (res)
    {

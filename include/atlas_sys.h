@@ -221,7 +221,11 @@ static char *ATL_tmpnam(void)
    if (FirstTime)
    {
       FirstTime = 0;
+#ifdef __MINGW32__
+      assert(tmpnam_s(tnam));
+#else
       assert(tmpnam(tnam));
+#endif
    }
    return(tnam);
 }
