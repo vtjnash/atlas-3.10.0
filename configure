@@ -288,14 +288,6 @@ then
    libinstdir='$(DESTDIR)/lib'
 fi
 #
-# Need to do some special crap for MINGW
-#
-flag=`echo "$OSGUESS" | sed -e "s/MINGW//"`
-if test "$flag" != "$OSGUESS"
-then
-	test -d tmp || mkdir tmp
-fi
-#
 # Create the Makefile and copy the compiler info file
 #
 echo BLDdir="$blddir" > Makefile

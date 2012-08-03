@@ -1,12 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+#ifdef __MINGW32__
+#define WIN32_LEAN_AND_MEAN 1
+#include <windows.h>
+#define SUPPRESS_WIN_ERROR_BOX() SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX)
+#else
+#define SUPPRESS_WIN_ERROR_BOX() {}
+#endif
+
 int main(int nargs, char **args)
 {
+   SUPPRESS_WIN_ERROR_BOX();
    double *x, *y, *z, ans[4];
    void *vp;
    void do_vmacc(double *z, double *x, double *y);
    int i;
-
+   
    vp = malloc(4*3*sizeof(double) + 32);
    x = (double*) ( 32 + ((((size_t)(vp))>>5)<<5) );
    y = x + 4;

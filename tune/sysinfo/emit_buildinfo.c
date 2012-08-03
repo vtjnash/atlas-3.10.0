@@ -47,8 +47,12 @@ char *CmndResults(char *cmnd)
 
    if (FirstTime)
    {
-      FirstTime = 0;
-      assert(tmpnam(tnam+sprintf(tnam,"%s","./tmp")));
+      FirstTime = 0;  
+#ifdef __MINGW32__
+      assert(tmpnam(tnam+3)); memcpy(tnam,"tmp.",4);
+#else
+      assert(tmpnam(tnam));
+#endif
    }
    sprintf(ln, "%s > %s\n", cmnd, tnam);
    fprintf(stderr, "system: %s", ln);
@@ -175,11 +179,11 @@ void GetInstInfo()
    else FixString(SYS);
    if (CmndOneLine("whoami", UNAM)) strcpy(UNAM, "UNKNOWN");
    FixString(UNAM);
-#if defined(ATL_OS_WinNT) && defined(__MINGW32__)
+#if defined(__MINGW32__)
    if (CmndOneLine("date /t", DATE)) strcpy(DATE, "UNKNOWN");
 #else
    if (CmndOneLine("date", DATE)) strcpy(DATE, "UNKNOWN");
-#end
+#endif
    FixString(DATE);
 }
 

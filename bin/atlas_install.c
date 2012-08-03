@@ -42,7 +42,11 @@
    #define Mmax(x, y) ( (x) > (y) ? (x) : (y) )
 #endif
 
+#ifdef __MINGW32__
+char *redir="2>&1 | xatlas_tee";
+#else
 char *redir="2>&1 | ./xatlas_tee";
+#endif
 char *fmake="make -f Makefile";
 int DOSEARCH=1, REGS=32;
 int QUERY=0;
@@ -138,7 +142,7 @@ void GetString(FILE *fpin, char *Default, char *spc, char *expstr,
       else fprintf(stdout, "%sEnter %s:", spc, expstr);
    }
    sp = fgets(str, 512, fpin);
-   if ( (sp == NULL) || (str[0] == '\0') || || (str[0] == '\r') || (str[0] == '\n') )
+   if ( (sp == NULL) || (str[0] == '\0') || (str[0] == '\r') || (str[0] == '\n') )
    {
       if (Default) strcpy(str0, Default);
       else str0[0] = '\0';
@@ -599,7 +603,7 @@ void GoToTown(int ARCHDEF, int L1DEF, int TuneLA)
    fpsum = fopen("INSTALL_LOG/SUMMARY.LOG", "a");
    ATL_Cassert(fpsum, "OPENING INSTALL_LOG/SUMMARY.LOG", NULL);
 #ifdef __MINGW32__
-   ATL_Cassert(tmpnam(tnam+sprintf(tnam,"%s","./tmp")), "GETTING TEMPFILE", NULL);
+   ATL_Cassert(tmpnam(tnam+3), "GETTING TEMPFILE", NULL); memcpy(tnam,"tmp.",4);
 #else
    ATL_Cassert(tmpnam(tnam), "GETTING TEMPFILE", NULL);
 #endif

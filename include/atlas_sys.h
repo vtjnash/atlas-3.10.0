@@ -222,7 +222,7 @@ static char *ATL_tmpnam(void)
    {
       FirstTime = 0;
 #ifdef __MINGW32__
-      assert(tmpnam_s(tnam));
+      assert(tmpnam(tnam+3)); strcpy(tnam,"tmp.");
 #else
       assert(tmpnam(tnam));
 #endif

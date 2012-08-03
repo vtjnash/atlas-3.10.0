@@ -3380,9 +3380,9 @@ void PushProc0(EXTENV *EE, EXTPROC **basep, EXTPROC **myfuncs, char *ln)
    pp->nargs = CountWords(pp->argnams);
 
 #ifdef __MINGW32__
-   cp = tmpnam(tnam+sprintf(tnam,"%s","./tmp"))
+   cp = tmpnam(tnam+3); memcpy(tnam,"tmp.",4);
 #else
-   cp = tmpnam(NULL);
+   cp = tmpnam(tnam);
 #endif
    if (cp == NULL) ExtErr(EE, "Out of tmpnams!!!");
    i = Wstrlen(tnam) + 1;

@@ -235,14 +235,14 @@ void NegateWords(WORDS *wp0, int N, int *cols)
 void NegFile(char *fnam, int N, int *cols)
 {
    char *tnam;
-   char ln[1024];
+   char ln[1024], tnam[L_tmpnam+5];
    FILE *fpin, *fpout;
    WORDS *wp0, *wp;
 
 #ifdef __MINGW32__
-   tnam = tmpnam_s(NULL);
+   assert(tmpnam(tnam+4)); memcpy(tnam,"tmpB.",5);
 #else
-   tnam = tmpnam(NULL);
+   assert(tmpnam(tnam));
 #end
    fpin = fopen(fnam, "r");
    assert(fpin);

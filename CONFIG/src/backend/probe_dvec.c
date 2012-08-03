@@ -1,7 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+#ifdef __MINGW32__
+#define WIN32_LEAN_AND_MEAN 1
+#include <windows.h>
+#define SUPPRESS_WIN_ERROR_BOX() SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX)
+#else
+#define SUPPRESS_WIN_ERROR_BOX() {}
+#endif
+
 int main(int nargs, char **args)
 {
+   SUPPRESS_WIN_ERROR_BOX();
    double *x, *y, *z, ans[2];
    void *vp;
    void do_vsum(double *, double *, double *);

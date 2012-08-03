@@ -142,7 +142,11 @@ void CombineFiles(char *fout, int nfiles, char **fnams)
    int i, j, n, nn;
    FILE *fpout, *fpin;
 
+#ifdef __MINGW32__
+   assert(tmpnam(tnam+3)); memcpy(tnam,"tmp.",4);
+#else
    assert(tmpnam(tnam));
+#endif
    for (n=i=0; i < nfiles; i++) n += NumUserCases0(fnams[i]);
 
    fpout = fopen(tnam, "w");

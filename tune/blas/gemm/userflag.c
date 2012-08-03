@@ -152,7 +152,11 @@ void GoGetThem(char *infile, char *outfile)
    n = NumUserCases0(infile);
    fpin = fopen(infile, "r");
    assert(fpin);
+#ifdef __MINGW32__
+   assert(tmpnam(tnam+3)); memcpy(tnam,"tmp.",4);
+#else
    assert(tmpnam(tnam));
+#endif
    fpout = fopen(tnam, "w");
    assert(fpout);
    assert(fgets(ln, 512, fpin));

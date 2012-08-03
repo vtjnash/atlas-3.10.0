@@ -216,13 +216,13 @@ static char *ATL_fgets_CWS(char *sout, int *plen, FILE *fpin)
 
 static char *ATL_tmpnam(void)
 {
-   static char tnam[L_tmpnam];
+   static char tnam[L_tmpnam+4];
    static char FirstTime=1;
    if (FirstTime)
    {
       FirstTime = 0;
 #ifdef __MINGW32__
-	  assert(tmpnam(tnam+sprintf(tnam,"%s","./tmp")));
+      assert(tmpnam(tnam+3)); memcpy(tnam,"tmpB.",5);
 #else
       assert(tmpnam(tnam));
 #endif
