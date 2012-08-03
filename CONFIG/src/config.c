@@ -737,7 +737,7 @@ char *NewAppendedString_SFLAG(char *old, char *flag, char *str)
    i += 1 + strlen(flag) + 1 + 1 + strlen(str) + 1 + 1;
    new = malloc(i*sizeof(char));
    assert(new);
-   sprintf(new, "%s %s '%s'", (old)?old:"", flag, str);
+   sprintf(new, "%s %s \"%s\"", (old)?old:"", flag, str);
    free(old);
    return(new);
 }
@@ -829,7 +829,6 @@ void SpewItForth(int verb, enum OSTYPE OS, enum MACHTYPE arch, int mhz,
    int i;
 
    assert(!system("make xspew"));
-   compsflags = Comps2Flags(comps);  /* Xlate comp/flag array to xspew flags */
    compsflags = Comps2Flags(comps);  /* Xlate comp/flag array to xspew flags */
    i = strlen(frm) + 11*13 + strlen(srcdir) + strlen(bindir);
    if (cdefs)
