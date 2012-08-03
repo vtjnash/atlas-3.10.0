@@ -76,7 +76,7 @@ static int R1KernelFailsTest
    char ln[4096];
    char *sp;
    int i, lda0;
-   static char outnam[L_tmpnam];
+   static char outnam[L_tmpnam+3];
    static int FirstTime=1;
 
    if (FirstTime)
@@ -84,7 +84,7 @@ static int R1KernelFailsTest
 
       FirstTime = 0;
 #ifdef __MINGW32__
-      assert(tmpnam_s(outnam));
+      assert(tmpnam(outnam+3)); memcpy(outnam,"tmp.",4);
 #else
       assert(tmpnam(outnam));
 #endif
@@ -191,7 +191,7 @@ static double TimeR1Kernel
    char ln[2048], resf[256], *sp;
    double *dp, mf;
    int i, align = pre2size(pre);
-   static char outnam[L_tmpnam];
+   static char outnam[L_tmpnam+3];
    static int FirstTime=1;
 
    if (FirstTime)
@@ -199,7 +199,7 @@ static double TimeR1Kernel
 
       FirstTime = 0;
 #ifdef __MINGW32__
-      assert(tmpnam_s(outnam));
+      assert(tmpnam(outnam+3)); memcpy(outnam,"tmp.",4);
 #else
       assert(tmpnam(outnam));
 #endif

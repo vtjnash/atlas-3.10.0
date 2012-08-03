@@ -198,12 +198,20 @@ void DoAllSearches(int verb, char pre, int nregs, int MACC, int lat, int nb,
 /*
  * Find no-copy code
  */
+#ifdef __MINGW32__
+   sprintf(ln, "xmmcuncpsearch -p %c -R -6\n", pre);
+#else
    sprintf(ln, "./xmmcuncpsearch -p %c -R -6\n", pre);
+#endif
    assert(!system(ln));
 /*
  * Find cleanup code
  */
+#ifdef __MINGW32__
+   sprintf(ln, "xmmcuncpsearch -p %c -R -3\n", pre);
+#else
    sprintf(ln, "./xmmcuncpsearch -p %c -R -3\n", pre);
+#endif
    assert(!system(ln));
    if (!mmg->next)
    {

@@ -96,7 +96,11 @@ void CreateIndex(char pre)
    }
    itmp = n;
 
+#ifdef __MINGW32__
+   j = sprintf(ln, "xusercomb -o %ccases.dsc -i %d", pre, n);
+#else
    j = sprintf(ln, "./xusercomb -o %ccases.dsc -i %d", pre, n);
+#endif
    assert(n <= 8);
    for (i=0; i < n; i++) j += sprintf(ln+j, " %s", fnams[i]);
    sprintf(ln+j, "\n");

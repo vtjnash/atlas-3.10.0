@@ -825,12 +825,15 @@ int main(int nargs, char **args)
    if (THREADS)
    {
       if (OSIsWin(OS))
-         fprintf(fpout, "   LIBS = -lkernel32 -lm\n\n");
+         fprintf(fpout, "   LIBS = -lPsapi -lkernel32 -lWs2_32 -lIphlpapi -lm\n\n");
       else
          fprintf(fpout, "   LIBS = -lpthread -lm\n\n");
    }
    else
-      fprintf(fpout, "   LIBS = -lm\n\n");
+      if (OSIsWin(OS))
+         fprintf(fpout, "   LIBS = -lPsapi -lkernel32 -lWs2_32 -lIphlpapi -lm\n\n");
+      else
+         fprintf(fpout, "   LIBS = -lm\n\n");
 
    fprintf(fpout,
    "#  --------------------------------------------------------------------\n");

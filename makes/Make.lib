@@ -63,41 +63,41 @@ GCCTRY_norp_WIN:
 #
 TRYALL_WIN :
 	if $(MAKE) GCCTRY_WIN outso="$(outso)" libas="$(libas)" outdef="$(outdef)" \
-        LIBS="$(F77SYSLIB) -lc $(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
+        LIBS="$(F77SYSLIB) $(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
            echo "$(outso) built wt gcc and all libs" ; \
         elif $(MAKE) LDTRY_WIN outso="$(outso)" libas="$(libas)" outdef="$(outdef)" \
-        LIBS="$(F77SYSLIB) -lc $(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
+        LIBS="$(F77SYSLIB) $(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
            echo "$(outso) built wt ld and all sys libs" ; \
 	elif $(MAKE) GCCTRY_norp_WIN outso="$(outso)" libas="$(libas)" outdef="$(outdef)" \
-        LIBS="$(F77SYSLIB) -lc $(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
+        LIBS="$(F77SYSLIB) $(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
            echo "$(outso) built wt gcc and all libs and no rpath" ; \
         elif $(MAKE) GCCTRY_WIN outso="$(outso)" libas="$(libas)" outdef="$(outdef)" \
-        LIBS="-lc $(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
+        LIBS="$(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
            echo "$(outso) built wt gcc and all C libs" ; \
         elif $(MAKE) LDTRY_WIN outso="$(outso)" libas="$(libas)" outdef="$(outdef)" \
-        LIBS="-lc $(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
-           echo "$(outso) built wt ld and -lc -lgcc" ; \
+        LIBS="$(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
+           echo "$(outso) built wt ld and -lgcc" ; \
         elif $(MAKE) GCCTRY_norp_WIN outso="$(outso)" libas="$(libas)" outdef="$(outdef)" \
-        LIBS="-lc $(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
+        LIBS="$(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
            echo "$(outso) built wt gcc and all C libs and no rpath" ; \
         elif $(MAKE) GCCTRY_WIN outso="$(outso)" libas="$(libas)" outdef="$(outdef)" \
-        LIBS="$(F77SYSLIB) -lc $(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
+        LIBS="$(F77SYSLIB) $(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
            echo "$(outso) built wt gcc and all libs except -lgcc" ; \
         elif $(MAKE) LDTRY_WIN outso="$(outso)" libas="$(libas)" outdef="$(outdef)" \
-        LIBS="$(F77SYSLIB) -lc $(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
+        LIBS="$(F77SYSLIB) $(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
            echo "$(outso) built wt all libs except -lgcc" ; \
         elif $(MAKE) GCCTRY_norp_WIN outso="$(outso)" libas="$(libas)" outdef="$(outdef)" \
-        LIBS="$(F77SYSLIB) -lc $(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
+        LIBS="$(F77SYSLIB) $(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
            echo "$(outso) built wt gcc and all libs except -lgcc, no rpath" ; \
         elif $(MAKE) GCCTRY_WIN outso="$(outso)" libas="$(libas)" outdef="$(outdef)" \
-        LIBS="-lc $(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
-           echo "$(outso) built wt gcc and -lc" ; \
+        LIBS="$(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
+           echo "$(outso) built wt gcc" ; \
         elif $(MAKE) LDTRY_WIN outso="$(outso)" libas="$(libas)" outdef="$(outdef)" \
-        LIBS="-lc $(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
-           echo "$(outso) built wt ld and -lc" ; \
+        LIBS="$(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
+           echo "$(outso) built wt ld" ; \
         elif $(MAKE) GCCTRY_norp_WIN outso="$(outso)" libas="$(libas)" outdef="$(outdef)" \
-        LIBS="-lc $(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
-           echo "$(outso) built wt gcc and -lc, no rpath" ; \
+        LIBS="$(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
+           echo "$(outso) built wt gcc, no rpath" ; \
         elif $(MAKE) LDTRY_WIN outso="$(outso)" libas="$(libas)" outdef="$(outdef)" \
         LIBS="$(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
            echo "$(outso) built wt ld" ; \
@@ -129,41 +129,41 @@ GCCTRY_norp:
 #
 TRYALL :
 	if $(MAKE) GCCTRY outso="$(outso)" libas="$(libas)"  \
-        LIBS="$(F77SYSLIB) -lc $(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
+        LIBS="$(F77SYSLIB) $(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
            echo "$(outso) built wt gcc and all libs" ; \
         elif $(MAKE) LDTRY outso="$(outso)" libas="$(libas)"  \
-        LIBS="$(F77SYSLIB) -lc $(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
+        LIBS="$(F77SYSLIB) $(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
            echo "$(outso) built wt ld and all sys libs" ; \
 	elif $(MAKE) GCCTRY_norp outso="$(outso)" libas="$(libas)"  \
-        LIBS="$(F77SYSLIB) -lc $(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
+        LIBS="$(F77SYSLIB) $(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
            echo "$(outso) built wt gcc and all libs and no rpath" ; \
         elif $(MAKE) GCCTRY outso="$(outso)" libas="$(libas)"  \
-        LIBS="-lc $(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
+        LIBS="$(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
            echo "$(outso) built wt gcc and all C libs" ; \
         elif $(MAKE) LDTRY outso="$(outso)" libas="$(libas)"  \
-        LIBS="-lc $(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
-           echo "$(outso) built wt ld and -lc -lgcc" ; \
+        LIBS="$(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
+           echo "$(outso) built wt ld and -lgcc" ; \
         elif $(MAKE) GCCTRY_norp outso="$(outso)" libas="$(libas)"  \
-        LIBS="-lc $(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
+        LIBS="$(LIBS) -lgcc" LIBINSTdir="$(LIBINSTdir)"; then \
            echo "$(outso) built wt gcc and all C libs and no rpath" ; \
         elif $(MAKE) GCCTRY outso="$(outso)" libas="$(libas)"  \
-        LIBS="$(F77SYSLIB) -lc $(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
+        LIBS="$(F77SYSLIB) $(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
            echo "$(outso) built wt gcc and all libs except -lgcc" ; \
         elif $(MAKE) LDTRY outso="$(outso)" libas="$(libas)"  \
-        LIBS="$(F77SYSLIB) -lc $(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
+        LIBS="$(F77SYSLIB) $(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
            echo "$(outso) built wt all libs except -lgcc" ; \
         elif $(MAKE) GCCTRY_norp outso="$(outso)" libas="$(libas)"  \
-        LIBS="$(F77SYSLIB) -lc $(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
+        LIBS="$(F77SYSLIB) $(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
            echo "$(outso) built wt gcc and all libs except -lgcc, no rpath" ; \
         elif $(MAKE) GCCTRY outso="$(outso)" libas="$(libas)"  \
-        LIBS="-lc $(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
-           echo "$(outso) built wt gcc and -lc" ; \
+        LIBS="$(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
+           echo "$(outso) built wt gcc and" ; \
         elif $(MAKE) LDTRY outso="$(outso)" libas="$(libas)"  \
-        LIBS="-lc $(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
-           echo "$(outso) built wt ld and -lc" ; \
+        LIBS="$(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
+           echo "$(outso) built wt ld and" ; \
         elif $(MAKE) GCCTRY_norp outso="$(outso)" libas="$(libas)"  \
-        LIBS="-lc $(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
-           echo "$(outso) built wt gcc and -lc, no rpath" ; \
+        LIBS="$(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
+           echo "$(outso) built wt gcc, no rpath" ; \
         elif $(MAKE) LDTRY outso="$(outso)" libas="$(libas)"  \
         LIBS="$(LIBS)" LIBINSTdir="$(LIBINSTdir)"; then \
            echo "$(outso) built wt ld" ; \

@@ -18,6 +18,7 @@ void *DumbTest(void *vp)
 }
 int main(int nargs, char **args)
 {
+   SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX);
    HANDLE thrH;
    DWORD thrID;
    void *vp, *vpret;
