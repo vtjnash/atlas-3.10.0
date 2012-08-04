@@ -1,7 +1,7 @@
 #include "atlconf.h"
 
 #ifdef __MINGW32__
-#define execxisgcc "-and -name '*.exe' -exec xisgcc '{}' ;"
+#define execxisgcc "-and -name '*.exe' -exec xisgcc '{}' ; | sed s/\\\\/\\//g"
 #else
 #define execxisgcc "-exec ./xisgcc '{}' \\;"
 #endif

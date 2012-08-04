@@ -5,75 +5,6 @@
 #include <math.h>
 #include <string.h>
 
-#if defined(__MINGW32__) || defined(__MINGW64__)
-
-int slashdrivesub(char *ln)
-/*
- * replaces \\c\ with c:\, returns change in string length
- * this version required for older cygwins
- */
-{
-   char *sp, *lp=ln, ctmp;
-   int nrep=0;
-   do
-   {
-      sp = strstr(lp, "\\\\");
-      if (sp && strlen(sp) > 3)
-      {
-         if (sp[2] == 'a' || sp[2] == 'b' || sp[2] == 'c' || sp[2] == 'd' ||
-             sp[2] == 'e' || sp[2] == 'f' || sp[2] == 'g' || sp[2] == 'h')
-         {
-            if (sp[3] == '\\')
-            {
-               ctmp = sp[2];
-               sp[0] = sp[2];
-               sp[1] = ':';
-               sp[2] = '\\';
-               for (lp=sp+3; *lp = lp[1]; lp++);
-               lp = sp + 3;
-               nrep++;
-            }
-            else lp = sp + 2;
-         }
-         else lp = sp + 2;
-      }
-      else lp = sp + 2;
-   }
-   while (sp);
-   return(-nrep);
-}
-
-int cygdrivesub(char *ln)
-/*
- * replaces \cygdrive\c\ with c:\, returns change in string length
- * this version works cygnus version 1.1.0
- */
-{
-   char *sp;
-   int i=0;
-
-   while(sp = strstr(ln, "\\cygdrive\\"))
-   {
-      i++;
-      sp[0] = sp[10];
-      sp[1] = ':';
-      sp[2] = '\\';
-      sp += 3;
-      while (*sp = sp[9]) sp++;
-   }
-   return( slashdrivesub(ln) - (i*9) );
-}
-
-void slashsub(char *ln)
-/*
- * changes forward slash of unix to backslash of windoze
- */
-{
-   int i;
-   for (i=0; ln[i]; i++) if (ln[i] == '/') ln[i] = '\\';
-}
-
-#endif
 int sComputeRound(void)
 /*
  * Blind translation of netlib LAPACK LAMCH's rounding computation
@@ -297,21 +228,8 @@ int main (int nargs, char **args)
    char *path = "res/";
    if (nargs > 1)
       path = args[1];
-   #if defined(__MINGW32__) || defined(__MINGW64__)
-   {
-      char *winpath;
-      winpath = malloc(sizeof(char)*(strlen(path)+1));
-      assert(winpath);
-      strcpy(winpath, path);
-      slashsub(winpath);
-      cygdrivesub(winpath);
-      emit_dlamch(winpath);
-      emit_slamch(winpath);
-      free(winpath);
-   }
-   #else
-      emit_dlamch(path);
-      emit_slamch(path);
-   #endif
+
+   emit_dlamch(path);
+   emit_slamch(path);
    return(0);
 }

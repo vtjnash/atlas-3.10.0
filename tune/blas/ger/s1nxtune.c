@@ -39,76 +39,6 @@
 #include "atlas_gentesttime.h"
 int ATL_KERN_NX=16;
 
-#if defined(__MINGW32__) || defined(__MINGW64__)
-
-int slashdrivesub(char *ln)
-/*
- * replaces \\c\ with c:\, returns change in string length
- * this version required for older cygwins
- */
-{
-   char *sp, *lp=ln, ctmp;
-   int nrep=0;
-   do
-   {
-      sp = strstr(lp, "\\\\");
-      if (sp && strlen(sp) > 3)
-      {
-         if (sp[2] == 'a' || sp[2] == 'b' || sp[2] == 'c' || sp[2] == 'd' ||
-             sp[2] == 'e' || sp[2] == 'f' || sp[2] == 'g' || sp[2] == 'h')
-         {
-            if (sp[3] == '\\')
-            {
-               ctmp = sp[2];
-               sp[0] = sp[2];
-               sp[1] = ':';
-               sp[2] = '\\';
-               for (lp=sp+3; *lp = lp[1]; lp++);
-               lp = sp + 3;
-               nrep++;
-            }
-            else lp = sp + 2;
-         }
-         else lp = sp + 2;
-      }
-      else lp = sp + 2;
-   }
-   while (sp);
-   return(-nrep);
-}
-
-int cygdrivesub(char *ln)
-/*
- * replaces \cygdrive\c\ with c:\, returns change in string length
- * this version works cygnus version 1.1.0
- */
-{
-   char *sp;
-   int i=0;
-
-   while(sp = strstr(ln, "\\cygdrive\\"))
-   {
-      i++;
-      sp[0] = sp[10];
-      sp[1] = ':';
-      sp[2] = '\\';
-      sp += 3;
-      while (*sp = sp[9]) sp++;
-   }
-   return( slashdrivesub(ln) - (i*9) );
-}
-
-void slashsub(char *ln)
-/*
- * changes forward slash of unix to backslash of windoze
- */
-{
-   int i;
-   for (i=0; ln[i]; i++) if (ln[i] == '/') ln[i] = '\\';
-}
-
-#endif
-
 static double GetTime
 (
    enum ATLAS_UPLO Uplo,/* which triangle? */
@@ -345,20 +275,12 @@ int GetFlags(int nargs, char **args, enum ATLAS_UPLO *Uplo, int *verb,
    if (of)
    {
       *outfile = DupString(of);
-      #if defined(__MINGW32__) || defined(__MINGW64__)
-         slashsub(*outfile);
-         cygdrivesub(*outfile);
-      #endif
    }
    else
    {
       of = malloc(sizeof(char)*32);
       assert(of);
-      #if defined(__MINGW32__) || defined(__MINGW64__)
-         sprintf(of, "res\atlas_%ssyrNX.h", Mstr(PRE));
-      #else
-         sprintf(of, "res/atlas_%ssyrNX.h", Mstr(PRE));
-      #endif
+      sprintf(of, "res/atlas_%ssyrNX.h", Mstr(PRE));
       *outfile = of;
    }
    return(N);

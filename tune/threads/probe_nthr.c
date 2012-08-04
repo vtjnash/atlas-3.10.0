@@ -2,76 +2,6 @@
 #include "atlas_misc.h"
 #include "assert.h"
 
-#if defined(__MINGW32__) || defined(__MINGW64__)
-
-int slashdrivesub(char *ln)
-/*
- * replaces \\c\ with c:\, returns change in string length
- * this version required for older cygwins
- */
-{
-   char *sp, *lp=ln, ctmp;
-   int nrep=0;
-   do
-   {
-      sp = strstr(lp, "\\\\");
-      if (sp && strlen(sp) > 3)
-      {
-         if (sp[2] == 'a' || sp[2] == 'b' || sp[2] == 'c' || sp[2] == 'd' ||
-             sp[2] == 'e' || sp[2] == 'f' || sp[2] == 'g' || sp[2] == 'h')
-         {
-            if (sp[3] == '\\')
-            {
-               ctmp = sp[2];
-               sp[0] = sp[2];
-               sp[1] = ':';
-               sp[2] = '\\';
-               for (lp=sp+3; *lp = lp[1]; lp++);
-               lp = sp + 3;
-               nrep++;
-            }
-            else lp = sp + 2;
-         }
-         else lp = sp + 2;
-      }
-      else lp = sp + 2;
-   }
-   while (sp);
-   return(-nrep);
-}
-
-int cygdrivesub(char *ln)
-/*
- * replaces \cygdrive\c\ with c:\, returns change in string length
- * this version works cygnus version 1.1.0
- */
-{
-   char *sp;
-   int i=0;
-
-   while(sp = strstr(ln, "\\cygdrive\\"))
-   {
-      i++;
-      sp[0] = sp[10];
-      sp[1] = ':';
-      sp[2] = '\\';
-      sp += 3;
-      while (*sp = sp[9]) sp++;
-   }
-   return( slashdrivesub(ln) - (i*9) );
-}
-
-void slashsub(char *ln)
-/*
- * changes forward slash of unix to backslash of windoze
- */
-{
-   int i;
-   for (i=0; ln[i]; i++) if (ln[i] == '/') ln[i] = '\\';
-}
-
-#endif
-
 
 void PrintUsage(char *nam)
 {
@@ -90,19 +20,7 @@ FILE *GetFlags(int nargs, char **args)
       switch(args[i][1])
       {
       case 'o':
-         #if defined(__MINGW32__) || defined(__MINGW64__)
-         {
-            char *wp;
-            wp = malloc(sizeof(char)*(strlen(args[++i])+1));;
-            strcpy(wp, args[i]);
-            slashsub(wp);
-            cygdrivesub(wp);
-            fpout = fopen(wp, "w");
-            free(wp);
-         }
-         #else
-            fpout = fopen(args[++i], "w");
-         #endif
+         fpout = fopen(args[++i], "w");
          assert(fpout);
          break;
       default:
