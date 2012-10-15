@@ -318,7 +318,7 @@ static char *GetKCFlags(char pre)
    else if (pre == 'c')
       pre = 's';
    i = system("rm -f res/kcflags.txt");
-   sprintf(ln, "grep \"%cKCFLAGS = \" Make.inc | sed s/%cKCFLAGS\\ =\\ // > res/kcflags.txt", toupper(pre), toupper(pre));
+   sprintf(ln, "grep \"%cKCFLAGS = \" Make.inc | sed 's/%cKCFLAGS = //' > res/kcflags.txt", toupper(pre), toupper(pre));
    assert(system(ln) == 0);
    fpin = fopen("res/kcflags.txt", "r");
    assert(fpin);
