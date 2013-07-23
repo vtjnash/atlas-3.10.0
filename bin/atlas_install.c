@@ -1081,10 +1081,12 @@ void GoToTown(int ARCHDEF, int L1DEF, int TuneLA)
    PrintStartStop(stdout, fpsum, 3, 1, 5, 1, 0, "FINAL STATIC LIBRARY UPDATE");
    sprintf(ln2, "INSTALL_LOG/LIBUPDATE.LOG");
    PrintBanner(ln2, 1, 5, 1, 1);
+#ifdef ATL_NCPU
    sprintf(ln, "%s IBuildLibs IBuildPtlibs0 %s %s\n", fmake, redir, ln2);
    fprintf(stdout, ln);
    ATL_Cassert(system(ln)==0, "STATIC LIBRARY UPDATE", ln2);
    PrintBanner(ln2, 0, 5, 1, 1);
+#endif
    PrintStartStop(stdout, fpsum, 3, 0, 5, 1, 0, "FINAL STATIC LIBRARY UPDATE");
 #ifdef ATL_DYLIBS
    PrintStartStop(stdout, fpsum, 3, 1, 5, 2, 0,
